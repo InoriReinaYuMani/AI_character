@@ -6,6 +6,7 @@ import Foundation
 import SwiftUI
 
 @main
+@MainActor
 struct CompanionDemoApp: App {
     @Environment(\.scenePhase) private var scenePhase
     @StateObject private var viewModel: CompanionViewModel

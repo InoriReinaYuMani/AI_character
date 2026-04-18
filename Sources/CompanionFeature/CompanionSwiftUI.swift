@@ -65,10 +65,11 @@ public final class CompanionViewModel: ObservableObject {
     }
 }
 
+@MainActor
 public struct CompanionRootView: View {
     @StateObject private var viewModel: CompanionViewModel
 
-    public init(viewModel: CompanionViewModel = .init()) {
+    @MainActor public init(viewModel: CompanionViewModel = .init()) {
         _viewModel = StateObject(wrappedValue: viewModel)
     }
 
