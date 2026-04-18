@@ -34,7 +34,7 @@ public struct QuestionEvent: Codable, Equatable {
     }
 }
 
-public struct DailyUsage: Equatable {
+public struct DailyUsage: Codable, Equatable {
     public let date: Date
     public var questionCount: Int
 
@@ -44,7 +44,7 @@ public struct DailyUsage: Equatable {
     }
 }
 
-public struct RelationshipMetrics: Equatable {
+public struct RelationshipMetrics: Codable, Equatable {
     public private(set) var intimacyScore: Int
     public private(set) var trustScore: Int
     public private(set) var totalQuestions: Int
@@ -159,7 +159,7 @@ public struct RelationshipMetrics: Equatable {
     }
 }
 
-public struct CompanionState: Equatable {
+public struct CompanionState: Codable, Equatable {
     public private(set) var events: [QuestionEvent]
     public private(set) var metrics: RelationshipMetrics
 
