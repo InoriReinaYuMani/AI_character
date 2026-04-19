@@ -22,7 +22,7 @@
 - `Sources/CompanionFeature/CompanionFeature.swift`: アプリ向けユースケース
 - `Sources/CompanionFeature/CompanionSwiftUI.swift`: SwiftUI画面実装（Chat/History/Stats/Customize）
 - `Sources/CompanionCLI/main.swift`: CLIデモ
-- `Sources/CompanionDemoApp/main.swift`: SwiftUIデモアプリのエントリ
+- `Sources/CompanionDemoApp/CompanionDemoApp.swift`: SwiftUIデモアプリのエントリ
 - `Tests/CompanionCoreTests/CompanionCoreTests.swift`: テスト
 - `UI_MOCKUP_JA.md`: 画面モック（Onboarding/Chat/History/Stats/Customize）
 
