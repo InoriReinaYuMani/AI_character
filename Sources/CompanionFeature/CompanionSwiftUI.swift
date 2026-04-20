@@ -31,12 +31,13 @@ public final class CompanionViewModel: ObservableObject {
         coordinator.relationshipStage()
     }
 
-    public func completeOnboarding(name: String, speechStyle: SpeechStyle, themeHex: String, tags: [String]) {
+    public func completeOnboarding(name: String, speechStyle: SpeechStyle, themeHex: String, avatarStyle: AvatarStyle, tags: [String]) {
         let finalName = name.trimmingCharacters(in: .whitespacesAndNewlines)
         coordinator.customizeProfile(
             name: finalName.isEmpty ? profile.name : finalName,
             speechStyle: speechStyle,
             appearanceThemeHex: themeHex,
+            avatarStyle: avatarStyle,
             personalityTags: tags.isEmpty ? profile.personalityTags : tags
         )
         hasCompletedOnboarding = true
@@ -55,11 +56,12 @@ public final class CompanionViewModel: ObservableObject {
         draftMessage = ""
     }
 
-    public func updateProfile(name: String, speechStyle: SpeechStyle, appearanceThemeHex: String, personalityTags: [String]) {
+    public func updateProfile(name: String, speechStyle: SpeechStyle, appearanceThemeHex: String, avatarStyle: AvatarStyle, personalityTags: [String]) {
         _ = coordinator.customizeProfile(
             name: name,
             speechStyle: speechStyle,
             appearanceThemeHex: appearanceThemeHex,
+            avatarStyle: avatarStyle,
             personalityTags: personalityTags
         )
     }
@@ -109,6 +111,7 @@ public struct CompanionOnboardingView: View {
     @State private var name: String = ""
     @State private var style: SpeechStyle = .friendly
     @State private var themeHex: String = "#7C9DFF"
+    @State private var avatarStyle: AvatarStyle = .rabbit
     @State private var tags: String = "聞き上手,励まし"
 
     public var body: some View {
@@ -122,6 +125,11 @@ public struct CompanionOnboardingView: View {
                         }
                     }
                     TextField("テーマ色(HEX)", text: $themeHex)
+                    Picker("アバター", selection: $avatarStyle) {
+                        ForEach(AvatarStyle.allCases, id: \.rawValue) { item in
+                            Text("\(item.icon) \(item.rawValue)").tag(item)
+                        }
+                    }
                     TextField("性格タグ(カンマ区切り)", text: $tags)
                 }
 
@@ -135,6 +143,7 @@ public struct CompanionOnboardingView: View {
                         name: name,
                         speechStyle: style,
                         themeHex: themeHex,
+                        avatarStyle: avatarStyle,
                         tags: parsedTags
                     )
                 }
@@ -145,6 +154,7 @@ public struct CompanionOnboardingView: View {
                 name = viewModel.profile.name
                 style = viewModel.profile.speechStyle
                 themeHex = viewModel.profile.appearanceThemeHex
+                avatarStyle = viewModel.profile.avatarStyle
                 tags = viewModel.profile.personalityTags.joined(separator: ",")
             }
         }
@@ -186,7 +196,7 @@ public struct CompanionChatView: View {
                 }
             }
             .padding()
-            .navigationTitle("\(viewModel.profile.name) と会話")
+            .navigationTitle("\(viewModel.profile.avatarStyle.icon) \(viewModel.profile.name) と会話")
         }
     }
 }
@@ -253,6 +263,7 @@ public struct CompanionCustomizeView: View {
     @State private var name: String = ""
     @State private var themeHex: String = "#7C9DFF"
     @State private var style: SpeechStyle = .friendly
+    @State private var avatarStyle: AvatarStyle = .rabbit
     @State private var tags: String = "聞き上手,励まし"
 
     public var body: some View {
@@ -264,6 +275,12 @@ public struct CompanionCustomizeView: View {
                 Picker("話し方", selection: $style) {
                     ForEach(SpeechStyle.allCases, id: \.rawValue) { item in
                         Text(item.rawValue).tag(item)
+                    }
+                }
+
+                Picker("アバター", selection: $avatarStyle) {
+                    ForEach(AvatarStyle.allCases, id: \.rawValue) { item in
+                        Text("\(item.icon) \(item.rawValue)").tag(item)
                     }
                 }
 
@@ -279,6 +296,7 @@ public struct CompanionCustomizeView: View {
                         name: name.isEmpty ? viewModel.profile.name : name,
                         speechStyle: style,
                         appearanceThemeHex: themeHex,
+                        avatarStyle: avatarStyle,
                         personalityTags: parsedTags.isEmpty ? viewModel.profile.personalityTags : parsedTags
                     )
                 }
@@ -287,6 +305,7 @@ public struct CompanionCustomizeView: View {
                 name = viewModel.profile.name
                 themeHex = viewModel.profile.appearanceThemeHex
                 style = viewModel.profile.speechStyle
+                avatarStyle = viewModel.profile.avatarStyle
                 tags = viewModel.profile.personalityTags.joined(separator: ",")
             }
             .navigationTitle("Customize")

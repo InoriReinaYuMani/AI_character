@@ -8,21 +8,40 @@ public enum SpeechStyle: String, Codable, CaseIterable {
     case cool
 }
 
+public enum AvatarStyle: String, Codable, CaseIterable {
+    case rabbit
+    case cat
+    case fox
+    case robot
+
+    public var icon: String {
+        switch self {
+        case .rabbit: return "🐰"
+        case .cat: return "🐱"
+        case .fox: return "🦊"
+        case .robot: return "🤖"
+        }
+    }
+}
+
 public struct AIProfile: Codable, Equatable {
     public var name: String
     public var speechStyle: SpeechStyle
     public var appearanceThemeHex: String
+    public var avatarStyle: AvatarStyle
     public var personalityTags: [String]
 
     public init(
         name: String = "Airi",
         speechStyle: SpeechStyle = .friendly,
         appearanceThemeHex: String = "#7C9DFF",
+        avatarStyle: AvatarStyle = .rabbit,
         personalityTags: [String] = ["聞き上手", "励まし"]
     ) {
         self.name = name
         self.speechStyle = speechStyle
         self.appearanceThemeHex = appearanceThemeHex
+        self.avatarStyle = avatarStyle
         self.personalityTags = personalityTags
     }
 }
@@ -59,6 +78,7 @@ public struct CompanionCoordinator {
         name: String? = nil,
         speechStyle: SpeechStyle? = nil,
         appearanceThemeHex: String? = nil,
+        avatarStyle: AvatarStyle? = nil,
         personalityTags: [String]? = nil
     ) -> AIProfile {
         if let name, name.isEmpty == false {
@@ -69,6 +89,9 @@ public struct CompanionCoordinator {
         }
         if let appearanceThemeHex, appearanceThemeHex.isEmpty == false {
             state.profile.appearanceThemeHex = appearanceThemeHex
+        }
+        if let avatarStyle {
+            state.profile.avatarStyle = avatarStyle
         }
         if let personalityTags, personalityTags.isEmpty == false {
             state.profile.personalityTags = personalityTags
